@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ColorModeProvider } from '@/services/providers/ColorModeProvider'
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+//imports
 
 
 const queryClient = new QueryClient({
