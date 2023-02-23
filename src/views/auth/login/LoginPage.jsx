@@ -62,7 +62,7 @@ const LoginPage = () => {
         select: (data) => data.user,
         retry: 1,
         onSuccess: (data) => {
-            stateContext.dispatch({ type: 'SET_USER', payload: data });
+            authUserContext.dispatch({ type: 'SET_AUTH_USER', payload: data });
         },
     });
 

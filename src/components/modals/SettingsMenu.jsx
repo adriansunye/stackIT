@@ -2,7 +2,7 @@ import { Menu, MenuItem } from '@mui/material'
 import React from 'react'
 
 const SettingsMenu = (props) => {
-  const {setOpenAdvertisementModal, ...otherProps} = props
+  const {setOpenAdvertisementModal,onDeleteHandler, adId, ...otherProps} = props
   return (
     <Menu
         id="demo-positioned-menu"
@@ -17,7 +17,8 @@ const SettingsMenu = (props) => {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={() => setOpenAdvertisementModal(true)}>Editar Curs</MenuItem>
+        <MenuItem onClick={() => setOpenAdvertisementModal(true)}>Edit</MenuItem>
+        <MenuItem onClick={() => onDeleteHandler(adId)}>Delete</MenuItem>
       </Menu>
   )
 }

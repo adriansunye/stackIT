@@ -7,6 +7,9 @@ import { useAdvertisementContext } from '@/services/providers/AdvertisementConte
 import useHandleError from '@/services/hooks/useHandleError';
 import { HolidayVillage } from '@mui/icons-material';
 import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
+import FullScreenLoader from '@/components/loaders/FullScreenLoader';
+import { useQuery } from '@tanstack/react-query';
+import { getMyAdvertisementsFn } from '@/api/advertisementsApi';
 
 
 const ProfilePage = () => {
@@ -14,12 +17,29 @@ const ProfilePage = () => {
   const [query, setQuery] = useState(null);
   const authUserContext = useAuthUserContext()
   const authUser = authUserContext.state.user
-  const advertisements = authUserContext.state.authUser.advertisements[0].advertisements
 
+  const { isLoading, data: advertisements } = useQuery(['myAdvertisements'], () => getMyAdvertisementsFn(), {
+
+    select: (data) => data.advertisements[0].advertisements,
+    onError: (error) => {
+      setOpenCourseModal(false);
+      if (Array.isArray(error.response.data.error)) {
+        error.data.error.forEach((el) =>
+          toast.error(el.message, {
+            position: 'top-right',
+          })
+        );
+      } else {
+        toast.error(error.response.data.message, {
+          position: 'top-right',
+        });
+      }
+    },
+  });
 
   //If the string is greater than 0, set the query to the results. If not, set the query to null.
 
- 
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [placement, setPlacement] = React.useState();
@@ -35,19 +55,30 @@ const ProfilePage = () => {
         setPlacement(newPlacement);
       };
 
- 
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
   return (
     <Box sx={{ m: 1, pb: 8, px: 3, backgroundColor: "background.default" }}>
-        <Grid container>
-          <Grid
-            item
-            md={2}
-          />
+      <Grid container>
+        <Grid
+          item
+          md={2}
+        />
+        {advertisements?.length === 0 || query?.length === 0 ? (
+          <Box maxWidth='sm' sx={{ mx: 'auto', py: '5rem' }}>
+            <Message type='info' title='Info'>
+              No advertisements in your profile
+            </Message>
+          </Box>
+        ) : (
           <Grid item container xs={12} spacing={2}>
-            {advertisements.map((advertisement) => (
+
+            {advertisements?.map((advertisement) => (
               <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
             ))}
           </Grid>
+          )}
         </Grid>
     </Box>
   );

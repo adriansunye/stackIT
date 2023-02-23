@@ -1,6 +1,7 @@
 import {
     Box,
     CircularProgress,
+    Input,
     TextareaAutosize,
     TextField,
     Typography,
@@ -22,31 +23,31 @@ import { updateAdvertisementFn } from '@/api/advertisementsApi';
 import useHandleError from '@/services/hooks/useHandleError';
 
 
-const updateCourseSchema = object({
-    code: string(),
-    name: string().max(70),
+const updateAdvertisementSchema = object({
+    name: string(),
+    category: string().max(70),
     description: string(),
     //image: z.instanceof(File),
 }).partial();
 
 
-const UpdateCourse = ({ setOpenCourseModal, course }) => {
+const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
     const queryClient = useQueryClient();
-    const { isLoading, mutate: updateCourse } = useMutation(
+    const { isLoading, mutate: updateAdvertisement } = useMutation(
         ({ id, formData }) =>
             updateAdvertisementFn({ id, formData }),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(['courses']);
-                toast.success('Course updated successfully');
-                setOpenCourseModal(false);
+                queryClient.invalidateQueries(['myAdvertisements']);
+                toast.success('Advertisement updated successfully');
+                setOpenAdvertisementModal(false);
             },
             onError: (error) => useHandleError(error),
         }
     );
 
     const methods = useForm({
-        resolver: zodResolver(updateCourseSchema),
+        resolver: zodResolver(updateAdvertisementSchema),
     });
 
     const {
@@ -61,15 +62,16 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
     }, [isSubmitting]);
 
     useEffect(() => {
-        if (course) {
+        if (advertisement) {
             methods.reset({
-                code: course.code,
-                name: course.name,
-                description: course.description,
+                name: advertisement.name,
+                category: advertisement.category,
+                description: advertisement.description,
+                price: advertisement.price
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [course]);
+    }, [advertisement]);
 
     const onSubmitHandler = (values) => {
         /* const formData = new FormData();
@@ -83,15 +85,15 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
         }
         formData.append('data', JSON.stringify(otherFormData)); */
         const formData = values
-        const id = course.id;
-        updateCourse({ id, formData });
+        const id = advertisement.id;
+        updateAdvertisement({ id, formData });
     };
 
     return (
         <Box>
             <Box display='flex' justifyContent='space-between' sx={{ mb: 3 }}>
                 <Typography variant='h5' component='h1'>
-                    Edit Course
+                    Edit Advertisement
                 </Typography>
                 {isLoading && <CircularProgress size='1rem' color='primary' />}
             </Box>
@@ -106,13 +108,22 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
                         label='Code'
                         fullWidth
                         sx={{ mb: '1rem' }}
-                        {...methods.register('code')}
+                        {...methods.register('name')}
                     />
                     <TextField
                         label='Title'
                         fullWidth
                         sx={{ mb: '1rem' }}
-                        {...methods.register('name')}
+                        {...methods.register('category')}
+                    />
+                    <TextField
+                        id="outlined-number"
+                        label="Number"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        {...methods.register('price')}
                     />
                     <Controller
                         name='description'
@@ -121,7 +132,7 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
                         render={({ field }) => (
                             <TextareaAutosize
                                 {...field}
-                                placeholder='Course Details'
+                                placeholder='Advertisement Details'
                                 minRows={8}
                                 style={{
                                     width: '100%',
@@ -141,7 +152,7 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
                         type='submit'
                         loading={isLoading}
                     >
-                        Edit Course
+                        Edit Advertisement
                     </LoadingButton>
                 </Box>
             </FormProvider>
@@ -149,4 +160,4 @@ const UpdateCourse = ({ setOpenCourseModal, course }) => {
     );
 };
 
-export default UpdateCourse;
+export default UpdateAdvertisement;

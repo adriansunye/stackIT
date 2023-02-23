@@ -26,14 +26,19 @@ export const updateAdvertisementFn = async ({
     formData,
 }) => {
     const response = await authApi.patch(`api/advertisements/${id}`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
+        // headers: {
+        //     'Content-Type': 'multipart/form-data',
+        // },
     });
     return response.data;
 };
 
 export const deleteAdvertisementFn = async (id) => {
     const response = await authApi.delete(`api/advertisements/${id}`);
+    return response.data;
+};
+
+export const getMyAdvertisementsFn = async () => {
+    const response = await authApi.get('/api/users/myAdvertisements');
     return response.data;
 };

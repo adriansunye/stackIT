@@ -120,7 +120,9 @@ const CardAdvertisement = ({ advertisement }) => {
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}
+                        adId={advertisement.id}
                         setOpenAdvertisementModal={setOpenAdvertisementModal} 
+                        onDeleteHandler={onDeleteHandler}
                     />
                     <CardMedia
                         component="img"

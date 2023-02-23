@@ -8,7 +8,6 @@ const OVERLAY_STYLES = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,.3)',
     zIndex: 1000,
 };
 
@@ -18,21 +17,21 @@ const MODAL_STYLES = {
     left: '50%',
     transform: 'translateX(-50%)',
     transition: 'all 300ms ease',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     overflowY: 'scroll',
     zIndex: 1000,
 };
 
 
 const AdvertisementModal = ({
-    openPostModal,
-    setOpenPostModal,
+    openAdvertisementModal,
+    setOpenAdvertisementModal,
     children,
 }) => {
-    if (!openPostModal) return null;
+    if (!openAdvertisementModal) return null;
     return ReactDom.createPortal(
         <>
-            <div style={OVERLAY_STYLES} onClick={() => setOpenPostModal(false)} />
+            <div style={OVERLAY_STYLES} onClick={() => setOpenAdvertisementModal(false)} />
             <Container
                 maxWidth='sm'
                 sx={{ p: '2rem 1rem', borderRadius: 1 }}
@@ -41,7 +40,7 @@ const AdvertisementModal = ({
                 {children}
             </Container>
         </>,
-        document.getElementById('post-modal')
+        document.getElementById('advertisement-modal')
     );
 };
 
