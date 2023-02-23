@@ -3,6 +3,7 @@ import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import Layout from '@/components/layout/Layout';
 import RequireUser from '@/guards/RequireUser';
 import { HomePage, LoginPage, ProfilePage, NotFoundPage} from '@/views';
+import  RegisterPage  from '@/views/auth/register/RegisterPage'
 
 const Loadable =
     (Component) => (props) =>
@@ -12,7 +13,7 @@ const Loadable =
         </Suspense>
     );
 
-const RegisterPage = Loadable(lazy(() => import('@/views/register/RegisterPage')));
+
 const UnauthorizedPage = Loadable(
     lazy(() => import('@/views/errors/UnauthorizedPage'))
 );
