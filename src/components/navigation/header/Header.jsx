@@ -1,3 +1,5 @@
+import "./Header.css";
+import { NavLink } from 'react-router-dom';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
@@ -16,7 +18,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'servicios', 'registro', 'Iniciar sesion'];
+ const navItems = ['Inicio', 'Servicio', 'Registro', 'Iniciar sesión'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -33,13 +35,25 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
+         <NavLink className="Header" to="/">
+               Home     
+               </NavLink>
+              <NavLink className="Header" to="/services">
+              Servicios     
+               </NavLink>     
+               <NavLink className="Header" to="/register">
+               Registro     
+               </NavLink>      
+               <NavLink className="Header" to="/login">
+               Iniciar sesión   
+              </NavLink> 
+        {/* {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
-        ))}
+        ))} */}
       </List>
     </Box>
   );
@@ -65,15 +79,28 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+           <img src='src\assets\LogoStackIT.png' style={{ width: 90, height: 80 }}/>
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+           <NavLink className="Header" to="/">
+               Home     
+               </NavLink>
+              <NavLink className="Header" to="/services">
+              Servicios     
+               </NavLink>     
+               <NavLink className="Header" to="/register">
+               Registro     
+               </NavLink>      
+               <NavLink className="Header" to="/login">
+               Iniciar sesión   
+              </NavLink>
+
+          {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
                 {item}
               </Button>
             ))}
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -93,6 +120,7 @@ function DrawerAppBar(props) {
           {drawer}
         </Drawer>
       </Box>
+      
     </Box>
   );
 }
@@ -106,3 +134,12 @@ DrawerAppBar.propTypes = {
 };
 
 export default DrawerAppBar;
+
+
+
+
+ 
+         
+       
+                     
+             
