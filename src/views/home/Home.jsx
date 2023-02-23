@@ -1,8 +1,8 @@
 import React from "react";
 import { createTheme, ThemeProvider, Divider } from "@mui/material";
-import Hero from "./components/Hero";
-import Businesses from "./components/Bussines";
-import Features from "./components/Features";
+import Hero from "@/components/layout/content/Hero";
+import Businesses from "@/components/layout/content/Bussines";
+import Features from "@/components/layout/content/Features";
 
 
 const theme = createTheme({

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, ButtonGroup, Grid } from '@mui/material';
+import { Avatar, Badge, Box, Button, ButtonGroup, Card, Grid, Typography } from '@mui/material';
 import CardAdvertisement from '@/components/layout/cards/CardAdvertisement';
 import Message from '@/components/layout/messages/Message';
 import Search from '@/components/navigation/search/Search';
@@ -16,7 +16,7 @@ const ProfilePage = () => {
   /* A hook that is used to get the advertisements from the database. */
   const [query, setQuery] = useState(null);
   const authUserContext = useAuthUserContext()
-  const authUser = authUserContext.state.user
+  const authUser = authUserContext.state.authUser
 
   const { isLoading, data: advertisements } = useQuery(['myAdvertisements'], () => getMyAdvertisementsFn(), {
 
@@ -60,26 +60,76 @@ const ProfilePage = () => {
   }
   return (
     <Box sx={{ m: 1, pb: 8, px: 3, backgroundColor: "background.default" }}>
-      <Grid container>
+      <Grid container gap={2}>
         <Grid
           item
           md={2}
-        />
-        {advertisements?.length === 0 || query?.length === 0 ? (
-          <Box maxWidth='sm' sx={{ mx: 'auto', py: '5rem' }}>
-            <Message type='info' title='Info'>
-              No advertisements in your profile
-            </Message>
-          </Box>
-        ) : (
-          <Grid item container xs={12} spacing={2}>
+        >
 
-            {advertisements?.map((advertisement) => (
-              <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
-            ))}
-          </Grid>
+          <Card >
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+
+            >
+              {/* CARD HEADER START */}
+              <Grid item sx={{ p: "1.5rem 0rem", textAlign: "center" }}>
+                {/* PROFILE PHOTO */}
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+
+                >
+                  <Avatar
+                    sx={{ width: 100, height: 100, mb: 1.5 }}
+                    src="https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/pass/best-face-oil.png"
+                  ></Avatar>
+                </Badge>
+
+                {/* DESCRIPTION */}
+                <Typography variant="h6">
+                  {authUser.user.name}
+                </Typography>
+                <Typography color="text.secondary">{authUser.user.name}</Typography>
+              </Grid>
+              {/* CARD HEADER END */}
+
+              {/* DETAILS */}
+              <Grid container>
+                <Grid item xs={6}>
+                  <Grid sx={{p:3}}>
+                    <Typography>hola</Typography>
+                    <Typography>adeu</Typography>
+
+                  </Grid>
+                </Grid>
+
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+        <Grid
+          item
+          sm={8}
+        >
+          {advertisements?.length === 0 || query?.length === 0 ? (
+            <Box maxWidth='sm' sx={{ mx: 'auto', py: '5rem' }}>
+              <Message type='info' title='Info'>
+                No advertisements in your profile
+              </Message>
+            </Box>
+          ) : (
+            <Grid item container xs={12} spacing={2}>
+
+              {advertisements?.map((advertisement) => (
+                <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
+              ))}
+            </Grid>
           )}
         </Grid>
+      </Grid>
     </Box>
   );
 };

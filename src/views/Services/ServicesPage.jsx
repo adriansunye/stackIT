@@ -1,7 +1,7 @@
 import { Message } from '@mui/icons-material';
 import { Box, Grid } from '@mui/material';
 import React, {useState} from 'react'
-import CardAdvertisement from '../../components/layout/cards/CardAdvertisement';
+import CardPublic from '@/components/layout/cards/CardPublic';
 import Search from '../../components/navigation/search/Search';
 import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import { useAdvertisementContext } from '@/services/providers/AdvertisementContextProvider';
@@ -58,16 +58,12 @@ const ServicesPage = () => {
         </Box>
       ) : (
         <Grid container>
-          <Grid
-            item
-            md={2}
-          />
           <Grid item container xs={12} spacing={2}>
             {!query ? advertisements.map((advertisement) => (
-              <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
+              <CardPublic key={advertisement.id} advertisement={advertisement} />
             ))
               : query?.map((advertisement) => (
-                <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
+                <CardPublic key={advertisement.id} advertisement={advertisement} />
               ))}
           </Grid>
 

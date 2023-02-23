@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Container, Toolbar, Typography, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,6 +7,10 @@ import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider
 import { useMutation } from '@tanstack/react-query';
 import { logoutUserFn } from '@/api/authApi';
 import useHandleError from '@/services/hooks/useHandleError';
+import useColorMode from '@/services/providers/ColorModeProvider';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+
 
 const LoadingButton = styled(_LoadingButton)`
   padding: 0.4rem;
@@ -23,6 +27,14 @@ const Header = () => {
     const authUserContext = useAuthUserContext();
     const user = authUserContext.state.authUser;
 
+    const colorMode = useColorMode();
+    const theme = useTheme();
+
+
+    const handleClick = (event) => {
+            colorMode.toggleColorMode();
+    }
+
     const { mutate: logoutUser, isLoading } = useMutation(
         async () => await logoutUserFn(),
         {
@@ -30,7 +42,6 @@ const Header = () => {
                 window.location.href = '/login';
             },
             onError: (error) => useHandleError(error),
-
         }
     );
 
@@ -51,24 +62,25 @@ const Header = () => {
                             Logo
                         </Typography>
                         <Box display='flex' sx={{ ml: 'auto' }}>
+                        {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: '#858585' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: '#858585' }} />}
                             <LoadingButton onClick={() => navigate('/services')}>
-                                <Typography sx={{ ml: 'auto', color: 'text.secondary' }}>
+                                <Typography sx={{  color: 'text.secondary' }}>
                                     Services
                                 </Typography>
                             </LoadingButton>
                             {!user && (
                                 <>
                                     <LoadingButton
-                                        sx={{ mr: 2, }}
+                                        
                                         onClick={() => navigate('/register')
                                         }
                                     >
-                                        <Typography sx={{ ml: 'auto', color: 'text.secondary' }}>
+                                        <Typography sx={{  color: 'text.secondary' }}>
                                             Signup
                                         </Typography>
                                     </LoadingButton>
                                     <LoadingButton onClick={() => navigate('/login')}>
-                                        <Typography sx={{ ml: 'auto', color: 'text.secondary' }}>
+                                        <Typography sx={{  color: 'text.secondary' }}>
                                             Login
                                         </Typography>
                                     </LoadingButton>
@@ -80,12 +92,12 @@ const Header = () => {
                                         loading={isLoading}
                                         onClick={() => navigate('/profile')}
                                     >
-                                        <Typography sx={{ ml: 'auto', color: 'text.secondary' }}>
+                                        <Typography sx={{  color: 'text.secondary' }}>
                                             Profile
                                         </Typography>
                                     </LoadingButton>
                                     <LoadingButton onClick={onLogoutHandler} loading={isLoading}>
-                                        <Typography sx={{ ml: 'auto', color: 'text.secondary' }}>
+                                        <Typography sx={{  color: 'text.secondary' }}>
                                             Logout
                                         </Typography>
                                     </LoadingButton>
