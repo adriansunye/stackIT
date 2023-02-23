@@ -4,7 +4,6 @@ authApi.defaults.headers.common['Content-Type'] = 'application/json';
 
 export const getAllAdvertisementsFn = async () => {
     const response = await authApi.get(`api/advertisements`);
-    console.log(response)
     return response.data;
 };
 
