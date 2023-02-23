@@ -105,7 +105,7 @@ const LoginPage = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '100vh',
-                backgroundColor: '#2363eb',
+                backgroundColor: 'background.default',
             }}
         >
             <Box
@@ -120,7 +120,7 @@ const LoginPage = () => {
                     textAlign='center'
                     component='h1'
                     sx={{
-                        color: '#f9d13e',
+                        color: 'text.primary',
                         fontWeight: 600,
                         fontSize: { xs: '2rem', md: '3rem' },
                         mb: 2,
@@ -146,7 +146,7 @@ const LoginPage = () => {
                         maxWidth='27rem'
                         width='100%'
                         sx={{
-                            backgroundColor: '#e5e7eb',
+                            backgroundColor: "#F2A157",
                             p: { xs: '1rem', sm: '2rem' },
                             borderRadius: 2,
                         }}
@@ -154,23 +154,15 @@ const LoginPage = () => {
                         <FormInput name='email' label='Email Address' type='email' />
                         <FormInput name='password' label='Password' type='password' />
 
-                        <Typography
-                            sx={{ fontSize: '0.9rem', mb: '1rem', textAlign: 'right' }}
-                        >
-                            <LinkItem to='/' style={{ color: '#333' }}>
-                                Forgot Password?
-                            </LinkItem>
-                        </Typography>
-
                         <LoadingButton
                             variant='contained'
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, backgroundColor: '#393939' }}
                             fullWidth
                             disableElevation
                             type='submit'
                             loading={isLoading}
                         >
-                            Login
+                            <Typography sx={{color:'white'}}>Login</Typography>
                         </LoadingButton>
 
                         <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }}>

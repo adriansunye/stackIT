@@ -40,7 +40,7 @@ export const ColorModeProvider = ({ children }) => {
                             main: '##007EAE',
                         },
                         background: {
-                            default: '#1D182F',
+                            default: '#393939',
                             paper: '#231F35',
                         },
                         text: {

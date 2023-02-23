@@ -1,0 +1,167 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Manrope', sans-serif;
+    color: black;
+    box-sizing: border-box;
+  }
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+  .appbar {
+    color: black !important;
+    padding-inline: 6%;
+    padding-block: 1%;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+  @media screen and (max-width: 600px) {
+    .appbar{
+      padding-inline: 2% !important;
+    }
+    .appbar-container{
+      padding-inline: 0px !important;
+    }
+  } 
+  .pages {
+    color: black !important;
+    font-weight: 500 !important;
+  }
+  .nav-link{
+    text-decoration: none !important;
+  }
+  .nav-link:hover{
+    text-decoration: overline !important;
+    transition: ease-in-out;
+  }
+  .hero-image{
+    max-width: 100%;
+    margin-left: 8%;
+  }
+  @media screen and (max-width: 900px) {
+    .hero-image{
+      margin-left: 0;
+      margin-top: 30px;
+    }
+  }
+  .client-business-logo{
+    width: 100px;
+    height: auto;
+  }
+  .client-business-logo:hover{
+    transform: scale(1.4, 1.6);
+    transition: transform 0.8s, -webkit-transform 0.8s;
+    transition-property: transform, -webkit-transform;
+    transition-duration: 0.8s, 0.8s;
+    transition-timing-function: ease, ease;
+    transition-delay: 0s, 0s;
+  }
+  .about-info-card{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+  .about-info-card:hover{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transform: scale(1.1, 1.1);
+    transition: 0.3s all ease-in-out;
+  }
+  @media screen and (max-width:600px) {
+    .about-info-card:hover{
+      transform: none;
+      transition: none;
+    }
+  }
+  .feature1-image{
+    width: 100%;
+    margin-left: 7%;
+  }
+  .feature2-image{
+    width: 80%;
+    margin-right: 7%;
+  }
+  @media screen and (max-width:600px) {
+    .feature1-image{
+      margin-left: 0%;
+    }
+    .feature2-image{
+      width: 100%;
+      margin-right: 0%;
+    }
+  }
+  .testimonial-card{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+  .quote-icon-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: #1976d2;
+    border-radius: 100%;
+  }
+  .quote-icon{
+    color: #ffffff;
+  }
+  .star-icon{
+    color: #FE8B75;
+  }
+  .bottom-banner{
+    background-image: url("./assets1/bottomBanner.png");
+    width: 100%;
+    height: 560px !important;
+    background-repeat: no-repeat;
+  }
+  @media screen and (max-width: 600px) {
+    .bottom-banner{
+      height: 300px !important;
+    }
+  }
+  .email-container{
+    background-color: #3734A9;
+    height: 300px;
+    border-radius: 15px;
+    box-sizing: border-box;
+  }
+  .textfield{
+    background-color: #ffffff;
+    color: black;
+    border: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 60% !important;
+  }
+  .subscribe-button{
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    background-color:#FE8B75 !important;
+    width: 30% !important;
+    box-shadow: none !important;
+  }
+  .join-waitlist{
+    background-color: #1B1C31;
+  }
+  .footer{
+    background-color: #1B1C31;
+  }
+  .waitlist-button{
+    background-color:#FE8B75 !important;
+    color: black !important;
+  }
+  .footer-divider{
+    background-color: #404444 !important;
+  }
+  .footer-link{
+    text-decoration: none !important;
+  }
+  .footer-link:hover{
+    text-decoration: underline !important;
+    transition: ease-in-out !important;
+  }
+  .copyright{
+    background-color: #1B1C31;
+  }

@@ -28,7 +28,7 @@ const FormInput = ({ name, label, ...otherProps }) => {
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <Typography
                         variant='body2'
-                        sx={{ color: '#2363eb', mb: 1, fontWeight: 500 }}
+                        sx={{ color: 'white', mb: 1, fontWeight: 500 }}
                     >
                         {label}
                     </Typography>
@@ -36,7 +36,7 @@ const FormInput = ({ name, label, ...otherProps }) => {
                         {...field}
                         fullWidth
                         disableUnderline
-                        sx={{ borderRadius: '1rem' }}
+                        sx={{ borderRadius: '1rem', color:'black'}}
                         error={!!errors[name]}
                         {...otherProps}
                     />
