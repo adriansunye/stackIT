@@ -4,11 +4,13 @@ import App from './App'
 import './index.css'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
+import AuthMiddleware from '@/middlewares/AuthMiddleware';
 
 import { ColorModeProvider } from '@/services/providers/ColorModeProvider'
+import { AuthUserContextProvider } from '@/services/providers/AuthUserContextProvider'
+import { AdvertisementContextProvider } from '@/services/providers/AdvertisementContextProvider';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-//imports
 
 
 const queryClient = new QueryClient({
@@ -27,9 +29,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <Router>
-        <ColorModeProvider>    
-            <App />
-        </ColorModeProvider>
+        <AuthUserContextProvider>
+          <ColorModeProvider>
+            <AdvertisementContextProvider>
+            <AuthMiddleware>
+              <App />
+            </AuthMiddleware>
+            </AdvertisementContextProvider>
+          </ColorModeProvider>
+        </AuthUserContextProvider>
         <ReactQueryDevtools initialisopen="{false}" />
       </Router>
     </QueryClientProvider>

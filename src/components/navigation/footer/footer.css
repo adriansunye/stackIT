@@ -1,13 +1,15 @@
 .footer-style {
     width: 100vw;
     background-color: #393939;
-}
-
-.row-style {
-    padding: 20px; 
+    border-top: rgba(255, 255, 255, 0.53) solid 1px;
 }
 
 .lastRow {
     display: flex; 
     justify-content: space-around;
+    align-items: center;
+    
 }
+
+
+

@@ -1,8 +1,12 @@
 import React from 'react'
+import Registro from '../../../components/Registro'
+
 
 const RegisterPage = () => {
   return (
-    <div>RegisterPage</div>
+    <div>
+      <Registro />
+    </div>
   )
 }
 
