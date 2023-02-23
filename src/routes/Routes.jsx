@@ -2,8 +2,7 @@ import { Suspense, lazy } from 'react';
 import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import Layout from '@/components/layout/Layout';
 import RequireUser from '@/guards/RequireUser';
-import { HomePage, LoginPage, ProfilePage, NotFoundPage} from '@/views';
-import  RegisterPage  from '@/views/auth/register/RegisterPage'
+import { HomePage, LoginPage, ProfilePage, NotFoundPage, ServicesPage, RegisterPage} from '@/views';
 
 const Loadable =
     (Component) => (props) =>
@@ -12,7 +11,6 @@ const Loadable =
             <Component {...props} />
         </Suspense>
     );
-
 
 const UnauthorizedPage = Loadable(
     lazy(() => import('@/views/errors/UnauthorizedPage'))
@@ -26,6 +24,10 @@ const guestRoutes = {
         {
             index: true,
             element: <HomePage />,
+        },
+        {
+            path: 'services',
+            element: <ServicesPage />,
         },
         {
             path: 'login',

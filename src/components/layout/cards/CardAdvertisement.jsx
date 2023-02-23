@@ -56,7 +56,8 @@ const CardAdvertisement = ({ advertisement }) => {
     };
 
     const can = (permission) =>
-        (user?.permissions).find((p) => p === permission) ? true : false;
+        (user[0]?.permissions).find((p) => p === permission) ? true : false;
+
 
     const queryClient = useQueryClient();
     const [openAdvertisementModal, setOpenAdvertisementModal] = useState(false);
@@ -80,6 +81,7 @@ const CardAdvertisement = ({ advertisement }) => {
             }
         },
     });
+    
 
     const onDeleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
@@ -99,11 +101,11 @@ const CardAdvertisement = ({ advertisement }) => {
     return (
         <>
             <Grid item xs={12} md={6} lg={4}>
-                <Card >
+                <Card sx={{ maxWidth: 345 }}>
                     <CardHeader
                         avatar={
-                            <Avatar aria-label="recipe">
-                                <FileCopyIcon />
+                            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                R
                             </Avatar>
                         }
                         action={
@@ -111,34 +113,35 @@ const CardAdvertisement = ({ advertisement }) => {
                                 <MoreVertIcon />
                             </IconButton>
                         }
-                        titleTypographyProps={{ variant: 'body2' }}
-                        subheaderTypographyProps={{ variant: 'subtitle2' }}
-                        title={advertisement.category}
-                        subheader={advertisement.name}
+                        title={advertisement.name}
+                        subheader={advertisement.category}
                     />
-                    <SettingsMenu 
+                    <SettingsMenu
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}
+                        adId={advertisement.id}
                         setOpenAdvertisementModal={setOpenAdvertisementModal} 
+                        onDeleteHandler={onDeleteHandler}
+                    />
+                    <CardMedia
+                        component="img"
+                        height="194"
+                        image="https://femcoders.factoriaf5.org/wp-content/uploads/2021/12/factoria-web.png"
+                        alt="Image for advertisement"
                     />
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
-                            Tags
+                            {advertisement.description}
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing>
-                        <Tooltip title="Demana més informació" placement="bottom">
-                            <IconButton aria-label="Demana més informació">
-                                <InfoIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Posat en contacte amb nosaltres" placement="bottom">
-                            <IconButton aria-label="Posat en contacte amb nosaltres utilitzant Whatsapp">
-                                <WhatsAppIcon />
-                            </IconButton>
-                        </Tooltip>
-
+                        <IconButton aria-label="add to favorites">
+                            <FavoriteIcon />
+                        </IconButton>
+                        <IconButton aria-label="share">
+                            <ShareIcon />
+                        </IconButton>
                         <ExpandMore
                             expand={expanded}
                             onClick={handleExpandClick}
@@ -150,7 +153,9 @@ const CardAdvertisement = ({ advertisement }) => {
                     </CardActions>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
-                            <Typography paragraph>{advertisement.description}</Typography>
+                            <Typography paragraph>
+                                {advertisement.description}
+                            </Typography>
                         </CardContent>
                     </Collapse>
                 </Card>

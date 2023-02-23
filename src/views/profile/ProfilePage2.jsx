@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, ButtonGroup, Grid } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import CardAdvertisement from '@/components/layout/cards/CardAdvertisement';
 import Message from '@/components/layout/messages/Message';
 import Search from '@/components/navigation/search/Search';
 import { useAdvertisementContext } from '@/services/providers/AdvertisementContextProvider';
 import useHandleError from '@/services/hooks/useHandleError';
-import { getAllAdvertisementsFn } from '@/api/advertisementsApi';
 import { HolidayVillage } from '@mui/icons-material';
+import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
+import FullScreenLoader from '@/components/loaders/FullScreenLoader';
+import { useQuery } from '@tanstack/react-query';
+import { getMyAdvertisementsFn } from '@/api/advertisementsApi';
+
 
 const ProfilePage = () => {
   /* A hook that is used to get the advertisements from the database. */
-  const advertisementContext = useAdvertisementContext();
   const [query, setQuery] = useState(null);
-  const { isLoading, data: advertisements } = useQuery(['advertisements'], () => getAllAdvertisementsFn(), {
+  const authUserContext = useAuthUserContext()
+  const authUser = authUserContext.state.user
 
-    select: (data) => data.advertisements,
-    onSuccess: (data) => {
-      console.log("hola")
+  const { isLoading, data: advertisements } = useQuery(['myAdvertisements'], () => getMyAdvertisementsFn(), {
 
-      advertisementContext.dispatch({ type: 'SET_ADVERTISEMENT', payload: data });
-    },
+    select: (data) => data.advertisements[0].advertisements,
     onError: (error) => {
       setOpenCourseModal(false);
       if (Array.isArray(error.response.data.error)) {
@@ -38,16 +37,8 @@ const ProfilePage = () => {
     },
   });
 
-
   //If the string is greater than 0, set the query to the results. If not, set the query to null.
 
-  const handleOnSearch = (string, results) => {
-    string.length > 0 ? setQuery(results) : setQuery(null);
-  };
-
-  const handleOnClear = () => {
-    setQuery(null);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -69,32 +60,26 @@ const ProfilePage = () => {
   }
   return (
     <Box sx={{ m: 1, pb: 8, px: 3, backgroundColor: "background.default" }}>
-      <Box sx={{ py: 2 }}>
-        <Search onSearch={handleOnSearch} onClear={handleOnClear} items={advertisements} />
-      </Box>
-      {advertisements?.length === 0 || query?.length === 0 ? (
-        <Box maxWidth='sm' sx={{ mx: 'auto', py: '5rem' }}>
-          <Message type='info' title='Info'>
-            No advertisements matching your search
-          </Message>
-        </Box>
-      ) : (
-        <Grid container>
-          <Grid
-            item
-            md={2}
-          />
+      <Grid container>
+        <Grid
+          item
+          md={2}
+        />
+        {advertisements?.length === 0 || query?.length === 0 ? (
+          <Box maxWidth='sm' sx={{ mx: 'auto', py: '5rem' }}>
+            <Message type='info' title='Info'>
+              No advertisements in your profile
+            </Message>
+          </Box>
+        ) : (
           <Grid item container xs={12} spacing={2}>
-            {!query ? advertisements?.map((advertisement) => (
-              <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
-            ))
-              : query?.map((advertisement) => (
-                <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
-              ))}
-          </Grid>
 
+            {advertisements?.map((advertisement) => (
+              <CardAdvertisement key={advertisement.id} advertisement={advertisement} />
+            ))}
+          </Grid>
+          )}
         </Grid>
-      )}
     </Box>
   );
 };
