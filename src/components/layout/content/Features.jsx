@@ -5,7 +5,7 @@ import feature2 from "@/assets/14828621777297.jpg";
 
 
 
-function Features() {
+function Features(texts) {
   return (
     <Box px={{ xs: "7%", sm: "7%" }}>
       {/* section first */}
@@ -17,7 +17,7 @@ function Features() {
             fontSize={{ xs: "34px", sm: "44px", md: "54px" }}
             mb={{ xs: "15px", sm: "25px" }}
           >
-            Get thousands of active followers
+            {texts.texts.features.title}
           </Typography>
           <Typography
             variant="body1"

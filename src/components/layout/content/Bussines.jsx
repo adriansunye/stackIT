@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Typography, Stack } from "@mui/material";
 
-function Businesses() {
+function Businesses(texts) {
   return (
     <Box textAlign="center" py="50px" px="7%">
       <Typography variant="h6" fontWeight="600" m="auto">
-        Trusted By Over 100+ Startups and freelance business
+        {texts.texts.bussiness.title}
       </Typography>
       <Stack
         pt="50px"

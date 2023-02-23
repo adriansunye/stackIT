@@ -1,4 +1,4 @@
-import { Message } from '@mui/icons-material';
+import  Message  from '@/components/layout/messages/Message';
 import { Box, Grid } from '@mui/material';
 import React, {useState} from 'react'
 import CardPublic from '@/components/layout/cards/CardPublic';

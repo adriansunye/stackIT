@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from './FormInput';
+import FormInput from '@/components/layout/forms/FormInput';
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
@@ -104,7 +104,7 @@ const LoginPage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: '100vh',
+                minHeight: '80vh',
                 backgroundColor: 'background.default',
             }}
         >

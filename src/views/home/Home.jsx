@@ -1,8 +1,9 @@
 import React from "react";
-import { createTheme, ThemeProvider, Divider } from "@mui/material";
+import { createTheme, ThemeProvider, Divider, Box, Container } from "@mui/material";
 import Hero from "@/components/layout/content/Hero";
 import Businesses from "@/components/layout/content/Bussines";
 import Features from "@/components/layout/content/Features";
+import { useLanguageModeContext } from "../../services/providers/LanguageModeContext";
 
 
 const theme = createTheme({
@@ -18,14 +19,18 @@ const theme = createTheme({
 });
 
 function Home() {
+  const languageModeContext = useLanguageModeContext();
+  const texts = languageModeContext.state.texts
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Hero />
+      
+        <Hero texts={texts}/>
         <Divider orientation="horizontal" />
-        <Businesses />
+        <Businesses texts={texts}/>
         <Divider orientation="horizontal" />
-        <Features />
+        <Features texts={texts}/>
+      
       </ThemeProvider>
     </>
   );

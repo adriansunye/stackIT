@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Toolbar, Typography, useTheme } from '@mui/material';
+import { AppBar, Box, Container, FormControl, MenuItem, Select, Toolbar, Typography, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,6 +10,9 @@ import useHandleError from '@/services/hooks/useHandleError';
 import useColorMode from '@/services/providers/ColorModeProvider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import logo from "@/assets/LogoStackIT.png";
+import { useLanguageModeContext } from '../../../services/providers/LanguageModeContext';
+
 
 
 const LoadingButton = styled(_LoadingButton)`
@@ -22,9 +25,14 @@ const LoadingButton = styled(_LoadingButton)`
   }
 `;
 
+
 const Header = () => {
     const navigate = useNavigate();
     const authUserContext = useAuthUserContext();
+    const languageModeContext = useLanguageModeContext();
+    const languageMode = languageModeContext.state.languageMode
+    const languageChange = languageMode === 'Es' ? 'En' : 'Es';
+
     const user = authUserContext.state.authUser;
 
     const colorMode = useColorMode();
@@ -32,7 +40,11 @@ const Header = () => {
 
 
     const handleClick = (event) => {
-            colorMode.toggleColorMode();
+        colorMode.toggleColorMode();
+    }
+
+    const handleChange = (event) => {
+        languageModeContext.dispatch({ type: 'SET_LANGUAGE_MODE', payload: languageChange });
     }
 
     const { mutate: logoutUser, isLoading } = useMutation(
@@ -52,35 +64,41 @@ const Header = () => {
     return (
         <>
             <AppBar position='static' style={{ background: 'transparent', boxShadow: 'none', color: 'text.secondary' }}>
+
                 <Container maxWidth='lg'>
+
                     <Toolbar>
+                        <img className="imgLogo" height={50} src={logo} alt="logo" />
                         <Typography
                             variant='h6'
                             onClick={() => navigate('/')}
                             sx={{ cursor: 'pointer' }}
                         >
-                            Logo
+
                         </Typography>
                         <Box display='flex' sx={{ ml: 'auto' }}>
-                        {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: '#858585' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: '#858585' }} />}
-                            <LoadingButton onClick={() => navigate('/services')}>
-                                <Typography sx={{  color: 'text.secondary' }}>
-                                    Services
-                                </Typography>
-                            </LoadingButton>
+                            <Box sx={{ mt: 2, mr: { md: 3 } }}>
+                                {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: '#858585' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: '#858585' }} />}
+                            </Box>
+                            <Select
+                                labelId="demo-simple-select-filled-label"
+                                id="demo-simple-select-filled"
+                                value={languageMode}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={languageMode}>{languageMode}</MenuItem>
+                                <MenuItem value={languageChange}>{languageChange}</MenuItem>
+                            </Select>
+
                             {!user && (
                                 <>
-                                    <LoadingButton
-                                        
-                                        onClick={() => navigate('/register')
-                                        }
-                                    >
-                                        <Typography sx={{  color: 'text.secondary' }}>
-                                            Signup
+                                    <LoadingButton onClick={() => navigate('/services')}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            {languageModeContext.state.texts.header.services}
                                         </Typography>
                                     </LoadingButton>
                                     <LoadingButton onClick={() => navigate('/login')}>
-                                        <Typography sx={{  color: 'text.secondary' }}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
                                             Login
                                         </Typography>
                                     </LoadingButton>
@@ -92,12 +110,12 @@ const Header = () => {
                                         loading={isLoading}
                                         onClick={() => navigate('/profile')}
                                     >
-                                        <Typography sx={{  color: 'text.secondary' }}>
-                                            Profile
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            {languageModeContext.state.texts.header.profile}
                                         </Typography>
                                     </LoadingButton>
                                     <LoadingButton onClick={onLogoutHandler} loading={isLoading}>
-                                        <Typography sx={{  color: 'text.secondary' }}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
                                             Logout
                                         </Typography>
                                     </LoadingButton>

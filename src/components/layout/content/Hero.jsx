@@ -3,7 +3,7 @@ import { Stack, Typography, Box, Button } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import heroImage from "@/assets/develop.jpg";
 
-function Hero() {
+function Hero(texts) {
   return (
     <Stack
       direction={{ sm: "column", md: "row" }}
@@ -17,12 +17,10 @@ function Hero() {
           fontWeight="800"
           fontSize={{ xs: "40px", sm: "50px", md: "66px" }}
         >
-          Increase your followers on social media
+         {texts.texts.home.title}
         </Typography>
         <Typography mt="15px" variant="body1" fontWeight="500">
-          Yet bed any for travelling assistance indulgence unpleasing. Not
-          thoughts all exercise blessing. Indulgence way everything joy
-          alteration boisterous the attachment.
+        { texts.texts.home.description}
         </Typography>
         <Button
           sx={{ mt: "20px" }}
@@ -33,8 +31,7 @@ function Hero() {
         </Button>
         
         <Typography mt="10px" variant="body1" fontWeight="500">
-          12,000+ people already joined the AKP's increase followers plan. Get
-          started today!
+         {texts.texts.home.join}
         </Typography>
       </Box>
       <Box flex={0.6} >
