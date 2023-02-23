@@ -1,0 +1,25 @@
+.hero {
+    background-color: #393939;
+    height: 40rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .landing-page-container {
+    background-color: #646464;
+    width: 90%;
+    height: 30rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  p {
+      width: 40%;
+      font-size: 2em;
+  }
+  img {
+    width: 40%;
+    border-radius: 10px;
+  }
