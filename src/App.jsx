@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import routes from '@/routes/Routes';
 import  Registro from './components/Registro';
 
+
 function App() {
   const content = useRoutes(routes);
   return (
