@@ -1,7 +1,9 @@
 import { Suspense, lazy } from 'react';
 import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import Layout from '@/components/layout/Layout';
+import RequireUser from '@/guards/RequireUser';
 import { HomePage, LoginPage, ProfilePage, NotFoundPage} from '@/views';
+import ServicesPage from '@/views/Services/ServicesPage';
 
 const Loadable =
     (Component) => (props) =>
@@ -30,6 +32,10 @@ const guestRoutes = {
             element: <LoginPage />,
         },
         {
+            path: 'service',
+            element: <ServicesPage />,
+        },
+        {
             path: 'register',
             element: <RegisterPage />,
         },
@@ -47,7 +53,13 @@ const authRoutes = {
     children: [
         {
             path: 'profile',
-            element: <ProfilePage />,
+            element: <RequireUser allowedRoles={['user', 'admin']} />,
+            children: [
+                {
+                    path: '',
+                    element: <ProfilePage />,
+                },
+            ],
         },
         {
             path: 'unauthorized',
