@@ -30,7 +30,7 @@ const ProfilePage = () => {
   const [query, setQuery] = useState(null);
   const authUserContext = useAuthUserContext()
   const authUser = authUserContext.state.authUser
-
+console.log(authUser.user)
   const { isLoading, data: advertisements } = useQuery(['myAdvertisements'], () => getMyAdvertisementsFn(), {
 
     select: (data) => data.advertisements[0].advertisements,
