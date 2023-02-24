@@ -34,7 +34,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-About...
+STACK-IT is a marketplace commited to offer the best environment for technology professionals and those in need of hiring one to connect.
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
@@ -108,6 +108,7 @@ Add additional notes about how to deploy this on a live system.
 ## ✍️ Authors <a name = "authors"></a>
 
 - [@adriansunye](https://github.com/adriansunye)
+
 
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
