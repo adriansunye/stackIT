@@ -29,6 +29,7 @@ function Footer() {
                     </Typography>
                     {company.map((item) => (
                         <Link
+                            key={item}
                             className="footer-link"
                             href="#"
                             color="inherit"
@@ -44,6 +45,7 @@ function Footer() {
                     </Typography>
                     {resources.map((item) => (
                         <Link
+                            key={item}
                             className="footer-link"
                             href="#"
                             color="inherit"
