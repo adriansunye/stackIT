@@ -1,145 +1,127 @@
-import "./Header.css";
-import { NavLink } from 'react-router-dom';
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { AppBar, Box, Container, FormControl, MenuItem, Select, Toolbar, Typography, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { LoadingButton as _LoadingButton } from '@mui/lab';
+import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
+import { useMutation } from '@tanstack/react-query';
+import { logoutUserFn } from '@/api/authApi';
+import useHandleError from '@/services/hooks/useHandleError';
+import useColorMode from '@/services/providers/ColorModeProvider';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import logo from "@/assets/LogoStackIT.png";
+import logoDark from "@/assets/LogoStackITDark.png";
 
-const drawerWidth = 240;
- const navItems = ['Inicio', 'Servicio', 'Registro', 'Iniciar sesión'];
+import { useLanguageModeContext } from '../../../services/providers/LanguageModeContext';
 
-function DrawerAppBar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
-      </Typography>
-      <Divider />
-      <List>
-         <NavLink className="Header" to="/">
-               Home     
-               </NavLink>
-              <NavLink className="Header" to="/services">
-              Servicios     
-               </NavLink>     
-               <NavLink className="Header" to="/register">
-               Registro     
-               </NavLink>      
-               <NavLink className="Header" to="/login">
-               Iniciar sesión   
-              </NavLink> 
-        {/* {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))} */}
-      </List>
-    </Box>
-  );
+const LoadingButton = styled(_LoadingButton)`
+  padding: 0.4rem;
+  color: #222;
+  font-weight: 500;
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  &:hover {
+    transform: translateY(-2px);
+  }
+`;
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-           <img src='src\assets\LogoStackIT.png' style={{ width: 90, height: 80 }}/>
-          </Typography>
-           <NavLink className="Header" to="/">
-               Home     
-               </NavLink>
-              <NavLink className="Header" to="/services">
-              Servicios     
-               </NavLink>     
-               <NavLink className="Header" to="/register">
-               Registro     
-               </NavLink>      
-               <NavLink className="Header" to="/login">
-               Iniciar sesión   
-              </NavLink>
 
-          {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box> */}
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      
-    </Box>
-  );
-}
+const Header = () => {
+    const navigate = useNavigate();
+    const authUserContext = useAuthUserContext();
+    const languageModeContext = useLanguageModeContext();
+    const languageMode = languageModeContext.state.languageMode
+    const languageChange = languageMode === 'Es' ? 'En' : 'Es';
 
-DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
+    const user = authUserContext.state.authUser;
+
+    const colorMode = useColorMode();
+    const theme = useTheme();
+
+
+    const handleClick = (event) => {
+        colorMode.toggleColorMode();
+    }
+
+    const handleChange = (event) => {
+        languageModeContext.dispatch({ type: 'SET_LANGUAGE_MODE', payload: languageChange });
+    }
+
+    const { mutate: logoutUser, isLoading } = useMutation(
+        async () => await logoutUserFn(),
+        {
+            onSuccess: (data) => {
+                window.location.href = '/login';
+            },
+            onError: (error) => useHandleError(error),
+        }
+    );
+
+    const onLogoutHandler = async () => {
+        logoutUser();
+    };
+
+    return (
+        <>
+            <AppBar position='fixed' style={{ backgroundColor: 'background.default', color: 'text.secondary' }}>
+
+                <Container maxWidth='lg'>
+
+                    <Toolbar>
+                        <img onClick={() => navigate('/')} className="imgLogo" height={50} src={theme.palette.mode === "light" ? logoDark : logo} alt="logo" />
+                        <Box display='flex' sx={{ ml: 'auto' }}>
+                            <Box sx={{ mt: 2, mr: { md: 3 } }}>
+                                {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: 'text.secondary' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: 'text.secondary' }} />}
+                            </Box>
+                            <Select
+                                labelId="demo-simple-select-filled-label"
+                                id="demo-simple-select-filled"
+                                value={languageMode}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={languageMode}>{languageMode}</MenuItem>
+                                <MenuItem value={languageChange}>{languageChange}</MenuItem>
+                            </Select>
+
+                            {!user && (
+                                <>
+                                    <LoadingButton onClick={() => navigate('/services')}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            {languageModeContext.state.texts.header.services}
+                                        </Typography>
+                                    </LoadingButton>
+                                    <LoadingButton onClick={() => navigate('/login')}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            Login
+                                        </Typography>
+                                    </LoadingButton>
+                                </>
+                            )}
+                            {user && (
+                                <>
+                                    <LoadingButton
+                                        loading={isLoading}
+                                        onClick={() => navigate('/profile')}
+                                    >
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            {languageModeContext.state.texts.header.profile}
+                                        </Typography>
+                                    </LoadingButton>
+                                    <LoadingButton onClick={onLogoutHandler} loading={isLoading}>
+                                        <Typography sx={{ color: 'text.secondary' }}>
+                                            Logout
+                                        </Typography>
+                                    </LoadingButton>
+                                </>
+                            )}
+                        </Box>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </>
+    );
 };
 
-export default DrawerAppBar;
-
-
-
-
- 
-         
-       
-                     
-             
+export default Header;

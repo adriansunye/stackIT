@@ -23,17 +23,9 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import UpdateAdvertisement from '@/components/modals/UpdateAdvertisement';
-import AdvertisementModal from '@/components/modals/AdvertisementModal';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteAdvertisementFn } from '@/api/advertisementsApi';
-import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
-import InfoIcon from '@mui/icons-material/Info';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import SettingsMenu from '@/components/modals/SettingsMenu';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
 
-const SERVER_ENDPOINT = import.meta.env.VITE_REACT_APP_SERVER_ENDPOINT;
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -46,58 +38,12 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const CardAdvertisement = ({ advertisement }) => {
-    const authUserContext = useAuthUserContext();
-    const user = authUserContext.state.authUser;
+const CardPublic = ({ advertisement }) => {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
-    const can = (permission) =>
-        (user[0]?.permissions).find((p) => p === permission) ? true : false;
-
-
-    const queryClient = useQueryClient();
-    const [openAdvertisementModal, setOpenAdvertisementModal] = useState(false);
-
-    const { mutate: deleteAdvertisement } = useMutation((id) => deleteAdvertisementFn(id), {
-        onSuccess(data) {
-            queryClient.invalidateQueries('advertisement');
-            toast.success('Advertisement deleted successfully');
-        },
-        onError(error) {
-            if (Array.isArray((error).data.error)) {
-                (error).data.error.forEach((el) =>
-                    toast.error(el.message, {
-                        position: 'top-right',
-                    })
-                );
-            } else {
-                toast.error((error).data.message, {
-                    position: 'top-right',
-                });
-            }
-        },
-    });
-    
-
-    const onDeleteHandler = (id) => {
-        if (window.confirm('Are you sure')) {
-            deleteAdvertisement(id);
-        }
-    };
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleSettingsClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     return (
         <>
             <Grid item xs={12} md={6} lg={4}>
@@ -108,21 +54,8 @@ const CardAdvertisement = ({ advertisement }) => {
                                 R
                             </Avatar>
                         }
-                        action={
-                            <IconButton onClick={handleSettingsClick} aria-label="settings">
-                                <MoreVertIcon />
-                            </IconButton>
-                        }
                         title={advertisement.name}
                         subheader={advertisement.category}
-                    />
-                    <SettingsMenu
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        adId={advertisement.id}
-                        setOpenAdvertisementModal={setOpenAdvertisementModal} 
-                        onDeleteHandler={onDeleteHandler}
                     />
                     <CardMedia
                         component="img"
@@ -136,6 +69,12 @@ const CardAdvertisement = ({ advertisement }) => {
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing>
+                        <IconButton aria-label="call me">
+                            <LocalPhoneIcon />
+                        </IconButton>
+                        <IconButton aria-label="send me a email">
+                            <EmailIcon />
+                        </IconButton>
                         <ExpandMore
                             expand={expanded}
                             onClick={handleExpandClick}
@@ -154,14 +93,8 @@ const CardAdvertisement = ({ advertisement }) => {
                     </Collapse>
                 </Card>
             </Grid>
-            <AdvertisementModal
-                openAdvertisementModal={openAdvertisementModal}
-                setOpenAdvertisementModal={setOpenAdvertisementModal}
-            >
-                <UpdateAdvertisement setOpenAdvertisementModal={setOpenAdvertisementModal} advertisement={advertisement} />
-            </AdvertisementModal>
         </>
     );
 };
 
-export default CardAdvertisement;
+export default CardPublic

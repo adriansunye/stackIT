@@ -1,3 +1,48 @@
+import { Box, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '@/components/layout/forms/FormInput';
+import { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { LoadingButton as _LoadingButton } from '@mui/lab';
+import { toast } from 'react-toastify';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getMeFn, loginUserFn } from '@/api/authApi';
+import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
+import useHandleError from '@/services/hooks/useHandleError';
+import { useLanguageModeContext } from '@/services/providers/LanguageModeContext';
+
+const LoadingButton = styled(_LoadingButton)`
+  padding: 0.6rem 0;
+  background-color: #f9d13e;
+  color: #2363eb;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #ebc22c;
+    transform: translateY(-2px);
+  }
+`;
+
+const LinkItem = styled(Link)`
+  text-decoration: none;
+  color: #2363eb;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const loginSchema = object({
+    email: string()
+        .min(1, 'Email address is required')
+        .email('Email Address is invalid'),
+    password: string()
+        .min(1, 'Password is required')
+        .min(8, 'Password must be more than 8 characters')
+        .max(32, 'Password must be less than 32 characters'),
+});
 
 import React from 'react'
 import Login from '../../../components/Login'
@@ -5,6 +50,8 @@ import Login from '../../../components/Login'
 const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const languageModeContext = useLanguageModeContext();
+    const texts = languageModeContext.state.texts
 
     const from = ((location.state)?.from.pathname) || '/';
 
@@ -55,6 +102,7 @@ const LoginPage = () => {
         loginUser(values);
     };
 
+
     return (
         <Container
             maxWidth={false}
@@ -62,8 +110,8 @@ const LoginPage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: '100vh',
-                backgroundColor: '#2363eb',
+                minHeight: '80vh',
+                backgroundColor: 'background.default',
             }}
         >
             <Box
@@ -78,21 +126,21 @@ const LoginPage = () => {
                     textAlign='center'
                     component='h1'
                     sx={{
-                        color: '#f9d13e',
+                        color: 'text.primary',
                         fontWeight: 600,
                         fontSize: { xs: '2rem', md: '3rem' },
                         mb: 2,
                         letterSpacing: 1,
                     }}
                 >
-                    Welcome Back!
+                    {texts.login.title}
                 </Typography>
                 <Typography
                     variant='body1'
                     component='h2'
-                    sx={{ color: '#e5e7eb', mb: 2 }}
+                    sx={{ color: 'text.primary', mb: 2 }}
                 >
-                    Login to have access!
+                    {texts.login.subtitle}
                 </Typography>
 
                 <FormProvider {...methods}>
@@ -104,35 +152,27 @@ const LoginPage = () => {
                         maxWidth='27rem'
                         width='100%'
                         sx={{
-                            backgroundColor: '#e5e7eb',
+                            backgroundColor: "#F2A157",
                             p: { xs: '1rem', sm: '2rem' },
                             borderRadius: 2,
                         }}
                     >
-                        <FormInput name='email' label='Email Address' type='email' />
-                        <FormInput name='password' label='Password' type='password' />
-
-                        <Typography
-                            sx={{ fontSize: '0.9rem', mb: '1rem', textAlign: 'right' }}
-                        >
-                            <LinkItem to='/' style={{ color: '#333' }}>
-                                Forgot Password?
-                            </LinkItem>
-                        </Typography>
+                        <FormInput name='email' label={texts.login.labelEmail} type='email' />
+                        <FormInput name='password' label={texts.login.labelPassword} type='password' />
 
                         <LoadingButton
                             variant='contained'
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, backgroundColor: '#393939' }}
                             fullWidth
                             disableElevation
                             type='submit'
                             loading={isLoading}
                         >
-                            Login
+                            <Typography sx={{ color: 'white' }}>Login</Typography>
                         </LoadingButton>
 
-                        <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }}>
-                            Need an account? <LinkItem to='/register'>Sign Up Here</LinkItem>
+                        <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }} color="black">
+                            {texts.login.join} <LinkItem to='/register'> {texts.login.joinLink}</LinkItem>
                         </Typography>
                     </Box>
                 </FormProvider>

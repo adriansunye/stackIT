@@ -9,6 +9,7 @@ import AuthMiddleware from '@/middlewares/AuthMiddleware';
 import { ColorModeProvider } from '@/services/providers/ColorModeProvider'
 import { AuthUserContextProvider } from '@/services/providers/AuthUserContextProvider'
 import { AdvertisementContextProvider } from '@/services/providers/AdvertisementContextProvider';
+import { LanguageModeContextProvider } from '@/services/providers/LanguageModeContext';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -31,11 +32,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Router>
         <AuthUserContextProvider>
           <ColorModeProvider>
+          <LanguageModeContextProvider>
             <AdvertisementContextProvider>
             <AuthMiddleware>
               <App />
             </AuthMiddleware>
             </AdvertisementContextProvider>
+            </LanguageModeContextProvider>
           </ColorModeProvider>
         </AuthUserContextProvider>
         <ReactQueryDevtools initialisopen="{false}" />
