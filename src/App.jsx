@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import routes from '@/routes/Routes';
 
+
 function App() {
   const content = useRoutes(routes);
   return (
@@ -13,6 +14,7 @@ function App() {
       <CssBaseline />
       <ToastContainer />
       {content}
+     
     </>
   );
 }

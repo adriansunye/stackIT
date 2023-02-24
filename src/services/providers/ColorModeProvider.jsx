@@ -24,7 +24,7 @@ export const ColorModeProvider = ({ children }) => {
                     mode,
                     ...(mode === 'light' && {
                         primary: {
-                            main: '#007EAE',
+                            main: '#F7F7FD',
                         },
                         background: {
                             default: '#F7F7FD',
@@ -40,7 +40,7 @@ export const ColorModeProvider = ({ children }) => {
                             main: '##007EAE',
                         },
                         background: {
-                            default: '#1D182F',
+                            default: '#393939',
                             paper: '#231F35',
                         },
                         text: {
