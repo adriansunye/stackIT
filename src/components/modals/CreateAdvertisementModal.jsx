@@ -1,7 +1,7 @@
 import {
     Box,
     CircularProgress,
-    Input,
+    FormHelperText,
     TextareaAutosize,
     TextField,
     Typography,
@@ -15,85 +15,67 @@ import { object, string, z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingButton } from '@mui/lab';
 import { useEffect } from 'react';
-import { pickBy } from 'lodash';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateAdvertisementFn } from '@/api/advertisementsApi';
-//import FileUploader from '@/components/layout/forms/inputs/FileUploader';
-import useHandleError from '@/services/hooks/useHandleError';
+import { createAdvertisementFn } from '@/api/advertisementsApi';
 
+const createAdvertisementSchema = object({
+    name: string().min(1, 'Title is required'),
+    category: string().max(50).min(1, 'Category is required'),
+    description: string().max(50).min(1, 'Description is required'),
+});
 
-const updateAdvertisementSchema = object({
-    name: string(),
-    category: string().max(70),
-    description: string(),
-    //image: z.instanceof(File),
-}).partial();
-
-
-const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
+const CreateAdvertisementModal = ({ setOpenAdvertisementModal }) => {
     const queryClient = useQueryClient();
-    const { isLoading, mutate: updateAdvertisement } = useMutation(
-        ({ id, formData }) =>
-            updateAdvertisementFn({ id, formData }),
+    const { isLoading, mutate: createAdvertisement } = useMutation(
+        (advertisement) => createAdvertisementFn(advertisement),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['myAdvertisements']);
-                toast.success('Advertisement updated successfully');
+                toast.success('Advertisement created successfully');
                 setOpenAdvertisementModal(false);
             },
-            onError: (error) => useHandleError(error),
+            onError: (error) => {
+                setOpenAdvertisementModal(false);
+                if (Array.isArray(error.response.data.error)) {
+                    error.data.error.forEach((el) =>
+                        toast.error(el.message, {
+                            position: 'top-right',
+                        })
+                    );
+                } else {
+                    toast.error(error.response.data.message, {
+                        position: 'top-right',
+                    });
+                }
+            },
         }
     );
 
     const methods = useForm({
-        resolver: zodResolver(updateAdvertisementSchema),
+        resolver: zodResolver(createAdvertisementSchema),
     });
 
     const {
-        formState: { isSubmitting },
+        formState: { errors, isSubmitSuccessful },
     } = methods;
 
     useEffect(() => {
-        if (isSubmitting) {
+        if (isSubmitSuccessful) {
             methods.reset();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSubmitting]);
-
-    useEffect(() => {
-        if (advertisement) {
-            methods.reset({
-                name: advertisement.name,
-                category: advertisement.category,
-                description: advertisement.description,
-                price: advertisement.price
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [advertisement]);
+    }, [isSubmitSuccessful]);
 
     const onSubmitHandler = (values) => {
-        /* const formData = new FormData();
-        const filteredFormData = pickBy(
-          values,
-          (value) => value !== '' && value !== undefined
-        );
-        const { image, ...otherFormData } = filteredFormData;
-        if (image) {
-          formData.append('image', image);
-        }
-        formData.append('data', JSON.stringify(otherFormData)); */
-        const formData = values
-        const id = advertisement.id;
-        updateAdvertisement({ id, formData });
+        createAdvertisement(values);
     };
 
     return (
         <Box>
             <Box display='flex' justifyContent='space-between' sx={{ mb: 3 }}>
                 <Typography variant='h5' component='h1'>
-                    Edit Advertisement
+                    Create Advertisement
                 </Typography>
                 {isLoading && <CircularProgress size='1rem' color='primary' />}
             </Box>
@@ -105,17 +87,24 @@ const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
                     onSubmit={methods.handleSubmit(onSubmitHandler)}
                 >
                     <TextField
-                        label='Code'
+                        label='Advertisement Title'
                         fullWidth
                         sx={{ mb: '1rem' }}
                         {...methods.register('name')}
                     />
+                    <FormHelperText error={!!errors['name']}>
+                        {errors['name'] ? errors['name'].message : ''}
+                    </FormHelperText>
                     <TextField
-                        label='Title'
+                        label='Category'
                         fullWidth
                         sx={{ mb: '1rem' }}
                         {...methods.register('category')}
                     />
+                    <FormHelperText error={!!errors['category']}>
+                        {errors['category'] ? errors['category'].message : ''}
+                    </FormHelperText>
+
                     <TextField
                         id="outlined-number"
                         label="Price"
@@ -125,24 +114,30 @@ const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
                         }}
                         {...methods.register('price')}
                     />
+
                     <Controller
                         name='description'
                         control={methods.control}
                         defaultValue=''
                         render={({ field }) => (
-                            <TextareaAutosize
-                                {...field}
-                                placeholder='Advertisement Details'
-                                minRows={8}
-                                style={{
-                                    width: '100%',
-                                    border: '1px solid #c8d0d4',
-                                    fontFamily: 'Roboto, sans-serif',
-                                    outline: 'none',
-                                    fontSize: '1rem',
-
-                                }}
-                            />
+                            <>
+                                <TextareaAutosize
+                                    {...field}
+                                    placeholder='Advertisement Details'
+                                    minRows={8}
+                                    style={{
+                                        width: '100%',
+                                        border: '1px solid #c8d0d4',
+                                        fontFamily: 'Roboto, sans-serif',
+                                        outline: 'none',
+                                        fontSize: '1rem',
+                                        padding: '1rem',
+                                    }}
+                                />
+                                <FormHelperText error={!!errors[field.name]}>
+                                    {errors[field.name] ? errors[field.name]?.message : ''}
+                                </FormHelperText>
+                            </>
                         )}
                     />
                     <LoadingButton
@@ -152,7 +147,7 @@ const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
                         type='submit'
                         loading={isLoading}
                     >
-                        Edit Advertisement
+                        Create Advertisement
                     </LoadingButton>
                 </Box>
             </FormProvider>
@@ -160,4 +155,4 @@ const UpdateAdvertisement = ({ setOpenAdvertisementModal, advertisement }) => {
     );
 };
 
-export default UpdateAdvertisement;
+export default CreateAdvertisementModal;

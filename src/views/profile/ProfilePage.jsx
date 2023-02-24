@@ -10,6 +10,9 @@ import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import { useQuery } from '@tanstack/react-query';
 import { getMyAdvertisementsFn } from '@/api/advertisementsApi';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AdvertisementModal from '../../components/modals/AdvertisementModal';
+import CreateAdvertisementModal from '../../components/modals/CreateAdvertisementModal';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -47,19 +50,12 @@ const ProfilePage = () => {
     },
   });
 
-  //If the string is greater than 0, set the query to the results. If not, set the query to null.
-
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [placement, setPlacement] = React.useState();
 
   /**
    * Sets anchor element to the event target and opens the popper.
    */
-  
-
-      const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [openAdvertisementModal, setOpenAdvertisementModal] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -69,85 +65,87 @@ const ProfilePage = () => {
     return <FullScreenLoader />;
   }
   return (
-    <Box sx={{ m: 1, pb: 8, px: 3, pt:3, backgroundColor: "background.default" }}>
+    <Box sx={{ m: 1, pb: 8, px: 3, pt: 3, backgroundColor: "background.default" }}>
       <Grid container gap={2}>
         <Grid
           item
           md={3}
         >
 
-<Card sx={{ minWidth: 350, bgcolor: "background.paper" }}>
-      <CardHeader
-        title={authUser.user.name}
-        subheader="Full-Stack Developer"
-      />
-      <CardMedia
-        component="img"
-        height="270"
-        image={!authUser.user.image ? "https://femcoders.factoriaf5.org/wp-content/uploads/2021/12/factoria-web.png" : `src/assets/${authUser.user.name}.jpg`}
-        alt="Foto perfil"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-        Ubicación: Asturias, España. <br/>
-        Modalidad: Remota. <br/>
-        Duracion del proyecto: <br/>
-        Preferencia. 1 semana ≤ 1 mes
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-       
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Sobre mí:</Typography>
-          <Typography paragraph>
-          Soy un desarrollador que trabaja tanto 
-        en el front-end como en el back-end de un sitio web, 
-        software o aplicación
-          </Typography>
-          <Typography paragraph>
-           Habilidades: <br/>
-           </Typography>
-           <Typography paragraph>
-           HTML5: Experto. <br/>
-           CSS: Experto. <br/>
-           JavaScript: Experto. <br/>
-           React js: Experto. <br/>
-           Java: Experto. <br/>
-           SQL: Experto. <br/>
-           
-          </Typography>
-          <Typography paragraph>
-            Experiencia: <br/>
-            </Typography>
-            <Typography paragraph>
-            INTA (Instituto Nacional de Técnica Aeroespacial) <br/>
-            Implementación en aplicación Portus (https://portus.puertos.es) de nuevas funcionalidades 
-            para la visualización de imágenes satelitales de la temperatura del agua. <br/> 
-            </Typography>
-            <Typography paragraph>
-            Aubay - Aubay <br/>
-            Arquitectura y desarrollo de portal de aplicaciones SPA para la administración 
-            de varios operadores de telecomunicaciones. <br/>
-          </Typography>
-          <Typography paragraph>
-          Tarifa aproximada: <br/>
-          </Typography>
-          <Typography paragraph>
-          290€/dia
-          </Typography>
-        </CardContent>
-      </Collapse>
-    </Card>
+          <Card sx={{ minWidth: 350, bgcolor: "background.paper" }}>
+            <CardHeader
+              title={authUser.user.name}
+              subheader="Full-Stack Developer"
+            />
+            <CardMedia
+              component="img"
+              height="270"
+              image={!authUser.user.name === 'Gabriel Gonzalez' || !authUser.user.name === 'Adrian Sunye' ? "https://femcoders.factoriaf5.org/wp-content/uploads/2021/12/factoria-web.png" : `src/assets/${authUser.user.name}.jpg`}
+              alt="Foto perfil"
+            />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                Ubicación: Asturias, España. <br />
+                Modalidad: Remota. <br />
+                Duracion del proyecto: <br />
+                Preferencia. 1 semana ≤ 1 mes
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton onClick={setOpenAdvertisementModal} aria-label="addCourse">
+                <AddCircleIcon />
+              </IconButton>
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Sobre mí:</Typography>
+                <Typography paragraph>
+                  Soy un desarrollador que trabaja tanto
+                  en el front-end como en el back-end de un sitio web,
+                  software o aplicación
+                </Typography>
+                <Typography paragraph>
+                  Habilidades: <br />
+                </Typography>
+                <Typography paragraph>
+                  HTML5: Experto. <br />
+                  CSS: Experto. <br />
+                  JavaScript: Experto. <br />
+                  React js: Experto. <br />
+                  Java: Experto. <br />
+                  SQL: Experto. <br />
+
+                </Typography>
+                <Typography paragraph>
+                  Experiencia: <br />
+                </Typography>
+                <Typography paragraph>
+                  INTA (Instituto Nacional de Técnica Aeroespacial) <br />
+                  Implementación en aplicación Portus (https://portus.puertos.es) de nuevas funcionalidades
+                  para la visualización de imágenes satelitales de la temperatura del agua. <br />
+                </Typography>
+                <Typography paragraph>
+                  Aubay - Aubay <br />
+                  Arquitectura y desarrollo de portal de aplicaciones SPA para la administración
+                  de varios operadores de telecomunicaciones. <br />
+                </Typography>
+                <Typography paragraph>
+                  Tarifa aproximada: <br />
+                </Typography>
+                <Typography paragraph>
+                  290€/dia
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
         </Grid>
         <Grid
           item
@@ -169,6 +167,12 @@ const ProfilePage = () => {
           )}
         </Grid>
       </Grid>
+      <AdvertisementModal
+        openAdvertisementModal={openAdvertisementModal}
+        setOpenAdvertisementModal={setOpenAdvertisementModal}
+      >
+        <CreateAdvertisementModal setOpenAdvertisementModal={setOpenAdvertisementModal} />
+      </AdvertisementModal>
     </Box>
   );
 };
