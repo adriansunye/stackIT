@@ -11,6 +11,8 @@ import useColorMode from '@/services/providers/ColorModeProvider';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import logo from "@/assets/LogoStackIT.png";
+import logoDark from "@/assets/LogoStackITDark.png";
+
 import { useLanguageModeContext } from '../../../services/providers/LanguageModeContext';
 
 
@@ -63,22 +65,15 @@ const Header = () => {
 
     return (
         <>
-            <AppBar position='static' style={{ background: 'transparent', boxShadow: 'none', color: 'text.secondary' }}>
+            <AppBar position='fixed' style={{ backgroundColor: 'background.default', color: 'text.secondary' }}>
 
                 <Container maxWidth='lg'>
 
                     <Toolbar>
-                        <img className="imgLogo" height={50} src={logo} alt="logo" />
-                        <Typography
-                            variant='h6'
-                            onClick={() => navigate('/')}
-                            sx={{ cursor: 'pointer' }}
-                        >
-
-                        </Typography>
+                        <img onClick={() => navigate('/')} className="imgLogo" height={50} src={theme.palette.mode === "light" ? logoDark : logo} alt="logo" />
                         <Box display='flex' sx={{ ml: 'auto' }}>
                             <Box sx={{ mt: 2, mr: { md: 3 } }}>
-                                {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: '#858585' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: '#858585' }} />}
+                                {theme.palette.mode === "light" ? <LightModeIcon onClick={handleClick} sx={{ color: 'text.secondary' }} /> : <DarkModeIcon onClick={handleClick} sx={{ color: 'text.secondary' }} />}
                             </Box>
                             <Select
                                 labelId="demo-simple-select-filled-label"

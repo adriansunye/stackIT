@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Box, Button, ButtonGroup, Card, Grid, Typography } from '@mui/material';
+import { styled, Collapse, Box, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import CardAdvertisement from '@/components/layout/cards/CardAdvertisement';
 import Message from '@/components/layout/messages/Message';
 import Search from '@/components/navigation/search/Search';
 import { useAdvertisementContext } from '@/services/providers/AdvertisementContextProvider';
 import useHandleError from '@/services/hooks/useHandleError';
-import { HolidayVillage } from '@mui/icons-material';
 import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
 import FullScreenLoader from '@/components/loaders/FullScreenLoader';
 import { useQuery } from '@tanstack/react-query';
 import { getMyAdvertisementsFn } from '@/api/advertisementsApi';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 const ProfilePage = () => {
   /* A hook that is used to get the advertisements from the database. */
@@ -47,68 +57,97 @@ const ProfilePage = () => {
   /**
    * Sets anchor element to the event target and opens the popper.
    */
-  const handleFilterClick =
-    (newPlacement) =>
-      (event) => {
-        setAnchorEl(event.currentTarget);
-        setOpen((prev) => placement !== newPlacement || !prev);
-        setPlacement(newPlacement);
-      };
+  
+
+      const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   if (isLoading) {
     return <FullScreenLoader />;
   }
   return (
-    <Box sx={{ m: 1, pb: 8, px: 3, backgroundColor: "background.default" }}>
+    <Box sx={{ m: 1, pb: 8, px: 3, pt:3, backgroundColor: "background.default" }}>
       <Grid container gap={2}>
         <Grid
           item
-          md={2}
+          md={3}
         >
 
-          <Card >
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-
-            >
-              {/* CARD HEADER START */}
-              <Grid item sx={{ p: "1.5rem 0rem", textAlign: "center" }}>
-                {/* PROFILE PHOTO */}
-                <Badge
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-
-                >
-                  <Avatar
-                    sx={{ width: 100, height: 100, mb: 1.5 }}
-                    src="https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/pass/best-face-oil.png"
-                  ></Avatar>
-                </Badge>
-
-                {/* DESCRIPTION */}
-                <Typography variant="h6">
-                  {authUser.user.name}
-                </Typography>
-                <Typography color="text.secondary">{authUser.user.name}</Typography>
-              </Grid>
-              {/* CARD HEADER END */}
-
-              {/* DETAILS */}
-              <Grid container>
-                <Grid item xs={6}>
-                  <Grid sx={{p:3}}>
-                    <Typography>hola</Typography>
-                    <Typography>adeu</Typography>
-
-                  </Grid>
-                </Grid>
-
-              </Grid>
-            </Grid>
-          </Card>
+<Card sx={{ minWidth: 350, bgcolor: "background.paper" }}>
+      <CardHeader
+        title={authUser.user.name}
+        subheader="Full-Stack Developer"
+      />
+      <CardMedia
+        component="img"
+        height="270"
+        image={!authUser.user.image ? "https://femcoders.factoriaf5.org/wp-content/uploads/2021/12/factoria-web.png" : `src/assets/${authUser.user.name}.jpg`}
+        alt="Foto perfil"
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+        Ubicación: Asturias, España. <br/>
+        Modalidad: Remota. <br/>
+        Duracion del proyecto: <br/>
+        Preferencia. 1 semana ≤ 1 mes
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+       
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Sobre mí:</Typography>
+          <Typography paragraph>
+          Soy un desarrollador que trabaja tanto 
+        en el front-end como en el back-end de un sitio web, 
+        software o aplicación
+          </Typography>
+          <Typography paragraph>
+           Habilidades: <br/>
+           </Typography>
+           <Typography paragraph>
+           HTML5: Experto. <br/>
+           CSS: Experto. <br/>
+           JavaScript: Experto. <br/>
+           React js: Experto. <br/>
+           Java: Experto. <br/>
+           SQL: Experto. <br/>
+           
+          </Typography>
+          <Typography paragraph>
+            Experiencia: <br/>
+            </Typography>
+            <Typography paragraph>
+            INTA (Instituto Nacional de Técnica Aeroespacial) <br/>
+            Implementación en aplicación Portus (https://portus.puertos.es) de nuevas funcionalidades 
+            para la visualización de imágenes satelitales de la temperatura del agua. <br/> 
+            </Typography>
+            <Typography paragraph>
+            Aubay - Aubay <br/>
+            Arquitectura y desarrollo de portal de aplicaciones SPA para la administración 
+            de varios operadores de telecomunicaciones. <br/>
+          </Typography>
+          <Typography paragraph>
+          Tarifa aproximada: <br/>
+          </Typography>
+          <Typography paragraph>
+          290€/dia
+          </Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
         </Grid>
         <Grid
           item

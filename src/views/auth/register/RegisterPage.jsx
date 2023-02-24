@@ -39,8 +39,6 @@ const registerSchema = object({
     .email('Email Address is invalid'),
   phone: string()
     .min(1, 'Phone number is required'),
-  role: string()
-    .min(1, 'Role is required'),
   password: string()
     .min(1, 'Password is required')
     .min(8, 'Password must be more than 8 characters')
@@ -153,7 +151,6 @@ const RegisterPage = () => {
             <FormInput name='name' label='Full Name' />
             <FormInput name='email' label='Email Address' type='email' />
             <FormInput name='phone' label='Phone number' />
-            <FormInput name='role' label='Role' />
             <FormInput name='password' label='Password' type='password' />
             <FormInput
               name='passwordConfirm'

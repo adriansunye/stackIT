@@ -12,6 +12,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getMeFn, loginUserFn } from '@/api/authApi';
 import { useAuthUserContext } from '@/services/providers/AuthUserContextProvider';
 import useHandleError from '@/services/hooks/useHandleError';
+import { useLanguageModeContext } from '@/services/providers/LanguageModeContext';
 
 const LoadingButton = styled(_LoadingButton)`
   padding: 0.6rem 0;
@@ -47,6 +48,8 @@ const loginSchema = object({
 const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const languageModeContext = useLanguageModeContext();
+    const texts = languageModeContext.state.texts
 
     const from = ((location.state)?.from.pathname) || '/';
 
@@ -97,6 +100,7 @@ const LoginPage = () => {
         loginUser(values);
     };
 
+
     return (
         <Container
             maxWidth={false}
@@ -127,14 +131,14 @@ const LoginPage = () => {
                         letterSpacing: 1,
                     }}
                 >
-                    Welcome Back!
+                    {texts.login.title}
                 </Typography>
                 <Typography
                     variant='body1'
                     component='h2'
-                    sx={{ color: '#e5e7eb', mb: 2 }}
+                    sx={{ color: 'text.primary', mb: 2 }}
                 >
-                    Login to have access!
+                    {texts.login.subtitle}
                 </Typography>
 
                 <FormProvider {...methods}>
@@ -151,8 +155,8 @@ const LoginPage = () => {
                             borderRadius: 2,
                         }}
                     >
-                        <FormInput name='email' label='Email Address' type='email' />
-                        <FormInput name='password' label='Password' type='password' />
+                        <FormInput name='email' label={texts.login.labelEmail} type='email' />
+                        <FormInput name='password' label={texts.login.labelPassword} type='password' />
 
                         <LoadingButton
                             variant='contained'
@@ -162,11 +166,11 @@ const LoginPage = () => {
                             type='submit'
                             loading={isLoading}
                         >
-                            <Typography sx={{color:'white'}}>Login</Typography>
+                            <Typography sx={{ color: 'white' }}>Login</Typography>
                         </LoadingButton>
 
-                        <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }}>
-                            Need an account? <LinkItem to='/register'>Sign Up Here</LinkItem>
+                        <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }} color="black">
+                            {texts.login.join} <LinkItem to='/register'> {texts.login.joinLink}</LinkItem>
                         </Typography>
                     </Box>
                 </FormProvider>

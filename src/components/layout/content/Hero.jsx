@@ -2,8 +2,10 @@ import React from "react";
 import { Stack, Typography, Box, Button } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import heroImage from "@/assets/develop.jpg";
+import { useNavigate } from 'react-router-dom';
 
 function Hero(texts) {
+  const navigate = useNavigate();
   return (
     <Stack
       direction={{ sm: "column", md: "row" }}
@@ -23,11 +25,12 @@ function Hero(texts) {
         { texts.texts.home.description}
         </Typography>
         <Button
+          onClick={() => navigate('/login')}
+          endIcon={<ArrowRightAltIcon />}
           sx={{ mt: "20px" }}
           variant="contained"
-          endIcon={<ArrowRightAltIcon />}
         >
-          Get started
+          {texts.texts.home.start}
         </Button>
         
         <Typography mt="10px" variant="body1" fontWeight="500">

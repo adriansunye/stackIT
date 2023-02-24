@@ -2,10 +2,12 @@ import React from "react";
 import { Box, Button, Typography, Stack } from "@mui/material";
 import feature1 from "@/assets/como-ser-freelance.jpg";
 import feature2 from "@/assets/14828621777297.jpg";
-
-
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { useNavigate } from 'react-router-dom';
 
 function Features(texts) {
+  const navigate = useNavigate();
+
   return (
     <Box px={{ xs: "7%", sm: "7%" }}>
       {/* section first */}
@@ -28,7 +30,8 @@ function Features(texts) {
             thoughts all exercise blessing. Indulgence way everything joy
             alteration boisterous the attachment.
           </Typography>
-          <Button variant="contained">Start free</Button>
+          <Button onClick={() => navigate('/login')}
+          endIcon={<ArrowRightAltIcon />} variant="contained">{texts.texts.home.start}</Button>
         </Box>
         <Box flex="0.6" mt={1}>
         <img className="feature1-image" src={feature1} alt="person" />
@@ -51,7 +54,7 @@ function Features(texts) {
             fontSize={{ xs: "34px", sm: "44px", md: "54px" }}
             mb={{ xs: "15px", sm: "25px" }}
           >
-            Daily active users on social media
+            {texts.texts.features.feature}
           </Typography>
           <Typography
             variant="body1"
@@ -62,7 +65,8 @@ function Features(texts) {
             thoughts all exercise blessing. Indulgence way everything joy
             alteration boisterous the attachment.
           </Typography>
-          <Button variant="contained">Start free</Button>
+          <Button onClick={() => navigate('/login')}
+          endIcon={<ArrowRightAltIcon />} variant="contained">{texts.texts.home.start}</Button>
         </Box>
       </Stack>
     </Box>

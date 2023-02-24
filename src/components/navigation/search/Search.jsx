@@ -7,8 +7,8 @@ const Search = (props) => {
         <React.Fragment>
             <ReactSearchAutocomplete
                 {...props}
-                fuseOptions={{ keys: ["category"] }} // Search on both fields
-                resultStringKeyName="category" // String to display in the results
+                fuseOptions={{ keys: ["name"] }} // Search on both fields
+                resultStringKeyName="name" // String to display in the results
                 showIcon={false}
                 styling={{
                     height: "34px",
