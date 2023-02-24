@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Stack, Typography, Link } from "@mui/material";
 
+//sring to render on footer
 const company = ["About us", "Careers", "Blog", "Pricing"];
 const resources = ["Proposal template", "Tutorial", "Invoices", "Freebies"];
 
