@@ -11,8 +11,6 @@ import { AuthUserContextProvider } from '@/services/providers/AuthUserContextPro
 import { AdvertisementContextProvider } from '@/services/providers/AdvertisementContextProvider';
 import { LanguageModeContextProvider } from '@/services/providers/LanguageModeContext';
 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,7 +39,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </LanguageModeContextProvider>
           </ColorModeProvider>
         </AuthUserContextProvider>
-        <ReactQueryDevtools initialisopen="{false}" />
       </Router>
     </QueryClientProvider>
   </React.StrictMode >,
