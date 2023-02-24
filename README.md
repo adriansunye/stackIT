@@ -108,7 +108,7 @@ Add additional notes about how to deploy this on a live system.
 ## ✍️ Authors <a name = "authors"></a>
 
 - [@adriansunye](https://github.com/adriansunye)
--[@gemaadeadame] (https://github.com/GemaAdeAdame)
+- [@gemaadeadame] (https://github.com/GemaAdeAdame)
 
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
